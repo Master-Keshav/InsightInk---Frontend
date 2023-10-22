@@ -6,6 +6,10 @@ import Spinner from "./Spinner";
 import PropTypes from "prop-types";
 
 const News = (props) => {
+    const PROTOCOL = window.location.protocol
+    const HOSTNAME = window.location.hostname
+    const PORT = 8000
+    const HOST = `${PROTOCOL}//${HOSTNAME}:${PORT}`
     const [articles, setArticles] = useState([]);
     const [loading, setLoading] = useState(true);
     const [totalResults, setTotalResults] = useState(0);
@@ -21,13 +25,14 @@ const News = (props) => {
         let parsedData = await data.json();
         props.setProgress(30);
         await axios
-            .post("http://localhost:8000/api/add_news", parsedData)
-            .then((response) => {
-                console.log("Response data:", response.data);
-            })
-            .catch((error) => {
-                console.error("Error:", error);
-            });
+        .post(`${HOST}/api/add_news`, parsedData)
+        .then((response) => {
+            console.log("Response data:", response.data);
+        })
+        .catch((error) => {
+            console.error("Error:", error);
+        });
+        props.setProgress(100);
         // console.log(parsedData.articles)
         // setArticles(parsedData.articles);
         // setTotalResults(parsedData.totalResults);
@@ -49,10 +54,11 @@ const News = (props) => {
     };
 
     useEffect(() => {
+        console.log(HOST)
         document.title = `${capitalizeFirstLetter(props.category)} - InsightInk`;
         props.setProgress(10);
         setNews();
-        props.setProgress(70);
+        props.setProgress(60);
         getNews();
         props.setProgress(100);
         // eslint-disable-next-line
