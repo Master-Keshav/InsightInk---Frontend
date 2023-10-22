@@ -20,39 +20,40 @@ const News = (props) => {
         let data = await fetch(url);
         let parsedData = await data.json();
         props.setProgress(30);
-        axios.post('http://localhost:8000/api/add_news', parsedData)
+        axios
+            .post("http://localhost:8000/api/add_news", parsedData)
             .then((response) => {
-                console.log('Response data:', response.data);
+                console.log("Response data:", response.data);
             })
             .catch((error) => {
-                console.error('Error:', error);
+                console.error("Error:", error);
             });
+        // console.log(parsedData.articles)
         // setArticles(parsedData.articles);
         // setTotalResults(parsedData.totalResults);
     };
 
-    const getNews = () => {
+    const getNews = async () => {
         axios
             .get("http://localhost:8000/api/news")
             .then((response) => {
-                // setNews(response.data);
-                console.log(response);
+                console.log(response.data);
+                setArticles(response.data);
+                console.log("response.data added");
+                // console.log(News)
             })
             .catch((error) => {
                 console.error("Error:", error);
             });
         setLoading(false);
-
-    }
+    };
 
     useEffect(() => {
-        document.title = `${capitalizeFirstLetter(props.category)} - NewsMonkey`;
-
-
+        document.title = `${capitalizeFirstLetter(props.category)} - InsightInk`;
         props.setProgress(10);
-        setNews()
+        setNews();
         props.setProgress(70);
-        getNews()
+        getNews();
         props.setProgress(100);
         // eslint-disable-next-line
     }, []);
@@ -63,7 +64,7 @@ const News = (props) => {
                 className="text-center"
                 style={{ margin: "35px 0px", marginTop: "90px" }}
             >
-                NewsMonkey - Top {capitalizeFirstLetter(props.category)} Headlines
+                InsightInk - Top {capitalizeFirstLetter(props.category)} Headlines
             </h1>
             {loading && <Spinner />}
             <div className="container">
