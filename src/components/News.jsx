@@ -15,12 +15,12 @@ const News = (props) => {
     };
 
     const setNews = async () => {
-        const url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=${props.apiKey}`;
         setLoading(true);
+        const url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=${props.apiKey}`;
         let data = await fetch(url);
         let parsedData = await data.json();
         props.setProgress(30);
-        axios
+        await axios
             .post("http://localhost:8000/api/add_news", parsedData)
             .then((response) => {
                 console.log("Response data:", response.data);
@@ -34,7 +34,7 @@ const News = (props) => {
     };
 
     const getNews = async () => {
-        axios
+        await axios
             .get("http://localhost:8000/api/news")
             .then((response) => {
                 console.log(response.data);
